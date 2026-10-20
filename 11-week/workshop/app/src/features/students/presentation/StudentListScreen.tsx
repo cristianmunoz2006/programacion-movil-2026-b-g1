@@ -20,7 +20,7 @@ import { RootStackParamList } from "../../../core/navigation/types";
 // navigation once StudentDetail exists.
 export function StudentListScreen() {
   const { logout } = useAuth();
-  const { state, reload } = useStudentList();
+  const { state, reload, refresh, refreshing } = useStudentList();
   const isConnected = useConnectivity();
   const [modalVisible, setModalVisible] = useState(false);
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
@@ -88,7 +88,7 @@ export function StudentListScreen() {
               onPress={() => navigation.navigate("StudentDetail", { student: item })}
             />
           )}
-          refreshControl={<RefreshControl refreshing={false} onRefresh={reload} />}
+          refreshControl={<RefreshControl refreshing={refreshing} onRefresh={refresh} />}
         />
       )}
 

@@ -17,6 +17,7 @@ type StudentListState = {
 };
 
 export function useStudentList() {
+  const [refreshing, setRefreshing] = useState(false);
   const [state, setState] = useState<StudentListState>({
     status: "loading",
     students: [],
@@ -40,9 +41,26 @@ export function useStudentList() {
     }
   }, []);
 
+  // Recarga deslizando: la lista sigue en pantalla y solo se ve el indicador de RefreshControl.
+  const refresh = useCallback(async () => {
+    setRefreshing(true);
+    try {
+      const { students, fromCache } = await container.students.getStudents.execute();
+      setState({
+        status: students.length === 0 ? "empty" : "loaded",
+        students,
+        isOffline: fromCache,
+      });
+    } catch {
+      setState((prev) => ({ ...prev, status: "error" }));
+    } finally {
+      setRefreshing(false);
+    }
+  }, []);
+
   useEffect(() => {
     load();
   }, [load]);
 
-  return { state, reload: load };
+  return { state, reload: load, refresh, refreshing };
 }
