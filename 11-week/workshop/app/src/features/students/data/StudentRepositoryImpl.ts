@@ -8,6 +8,12 @@ import { StudentRepository } from "../domain/StudentRepository";
 // docs/03-api-and-data/persistence.md (cache:students:list key).
 export class StudentRepositoryImpl implements StudentRepository {
   async getStudents(): Promise<{ students: Student[]; fromCache: boolean }> {
+    // Solo para probar los estados de la lista: ver .env.example.
+    const simulatedDelay = Number(process.env.EXPO_PUBLIC_SIM_DELAY_MS ?? 0);
+    if (simulatedDelay > 0) await new Promise((resolve) => setTimeout(resolve, simulatedDelay));
+    if (process.env.EXPO_PUBLIC_SIM_LIST === "error") throw new NetworkError("Falla simulada");
+    if (process.env.EXPO_PUBLIC_SIM_LIST === "empty") return { students: [], fromCache: false };
+
     try {
       const students = await apiFetch<Student[]>("/students");
       await cache.set(cache.keys.studentsList, students);

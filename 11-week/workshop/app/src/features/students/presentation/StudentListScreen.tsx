@@ -111,7 +111,7 @@ function StudentCard({ student, onPress }: { student: Student; onPress: () => vo
 
 function SkeletonList() {
   return (
-    <View style={{ padding: theme.space.md }}>
+    <View accessible accessibilityRole="progressbar" accessibilityLabel={strings.loadingMessage}>
       {[0, 1, 2, 3, 4].map((i) => (
         <View key={i} style={styles.skeletonRow} />
       ))}
@@ -156,8 +156,9 @@ const styles = StyleSheet.create({
   cardText: { ...theme.text.body, color: theme.color.text },
   skeletonRow: {
     height: 48,
+    marginHorizontal: theme.space.md,
     borderRadius: theme.radius.md,
     backgroundColor: theme.color.border,
-    marginBottom: theme.space.sm,
+    marginVertical: theme.space.xs,
   },
 });
