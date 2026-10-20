@@ -27,6 +27,7 @@ export function LoginScreen() {
           value={username}
           onChangeText={setUsername}
           autoCapitalize="none"
+          autoComplete="username"
           editable={!isLoading}
         />
         <TextField
@@ -34,12 +35,17 @@ export function LoginScreen() {
           value={password}
           onChangeText={setPassword}
           secureTextEntry
+          autoComplete="password"
+          returnKeyType="done"
+          onSubmitEditing={() => {
+            if (canSubmit && isConnected) login(username.trim(), password);
+          }}
           editable={!isLoading}
         />
 
-        {!isConnected && <Text style={styles.error}>{strings.errors.offline}</Text>}
+        {!isConnected && <Text style={styles.error} accessibilityRole="alert" accessibilityLiveRegion="polite">{strings.errors.offline}</Text>}
         {isConnected && state.status === "error" && (
-          <Text style={styles.error}>{state.errorMessage}</Text>
+          <Text style={styles.error} accessibilityRole="alert" accessibilityLiveRegion="polite">{state.errorMessage}</Text>
         )}
 
         <Button
@@ -61,6 +67,6 @@ const styles = StyleSheet.create({
     backgroundColor: theme.color.background,
   },
   title: { ...theme.text.title, color: theme.color.text, textAlign: "center", marginBottom: theme.space.xl },
-  form: { gap: theme.space.sm },
+  form: { gap: theme.space.sm, width: "100%", maxWidth: 480, alignSelf: "center" },
   error: { color: theme.color.error, ...theme.text.caption, marginBottom: theme.space.sm },
 });

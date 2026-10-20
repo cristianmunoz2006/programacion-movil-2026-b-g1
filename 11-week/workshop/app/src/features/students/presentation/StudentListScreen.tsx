@@ -103,7 +103,7 @@ export function StudentListScreen() {
 
 function StudentCard({ student, onPress }: { student: Student; onPress: () => void }) {
   return (
-    <Pressable accessible accessibilityRole="button" accessibilityLabel={student.name} onPress={onPress} style={styles.card}>
+    <Pressable accessible accessibilityRole="button" accessibilityLabel={student.name} accessibilityHint={strings.cardHint} onPress={onPress} style={styles.card}>
       <Text style={styles.cardText}>{student.name}</Text>
     </Pressable>
   );

@@ -3,6 +3,7 @@ export const strings = {
   screenTitle: "Estudiantes",
   detailTitle: "Detalle del estudiante",
   loadingMessage: "Cargando estudiantes",
+  cardHint: "Abre el detalle del estudiante",
   logoutButtonA11y: "Cerrar sesión",
   emptyMessage: "Todavía no hay estudiantes registrados",
   addStudentCta: "Agregar estudiante",
