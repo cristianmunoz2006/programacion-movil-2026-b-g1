@@ -2,7 +2,10 @@
 // there (5 routes total), but only Login/StudentList are built this corte (HU5/HU6/HU7).
 // StudentDetail, AttendanceForm, AttendanceHistory get added here when those HUs are built —
 // adding their types now, with no screen behind them, would be dead code.
+import { Student } from "../../features/students/domain/Student";
+
 export type RootStackParamList = {
   Login: undefined;
   StudentList: undefined;
+  StudentDetail: { student: Student };
 };

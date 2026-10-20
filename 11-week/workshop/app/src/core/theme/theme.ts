@@ -5,6 +5,10 @@
 export const theme = {
   color: {
     primary: "#2E7D32",
+    secondary: "#1565C0",
+    onSecondary: "#FFFFFF",
+    success: "#1B5E20",
+    onSuccess: "#FFFFFF",
     onPrimary: "#FFFFFF",
     surface: "#FFFFFF",
     background: "#F5F5F5",

@@ -1,6 +1,7 @@
 // See docs/02-code-and-ui/i18n.md.
 export const strings = {
   screenTitle: "Estudiantes",
+  detailTitle: "Detalle del estudiante",
   logoutButtonA11y: "Cerrar sesión",
   emptyMessage: "Todavía no hay estudiantes registrados",
   addStudentCta: "Agregar estudiante",

@@ -8,6 +8,9 @@ import { useStudentList } from "./useStudentList";
 import { AddStudentModal } from "./AddStudentModal";
 import { strings } from "./strings";
 import { Student } from "../domain/Student";
+import { useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { RootStackParamList } from "../../../core/navigation/types";
 
 // See docs/01-architecture/screens/student-list.md for the full spec this implements.
 //
@@ -20,6 +23,7 @@ export function StudentListScreen() {
   const { state, reload } = useStudentList();
   const isConnected = useConnectivity();
   const [modalVisible, setModalVisible] = useState(false);
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
   const showOfflineBanner = state.isOffline || !isConnected;
 
@@ -78,7 +82,12 @@ export function StudentListScreen() {
         <FlatList
           data={state.students}
           keyExtractor={(item) => item.id}
-          renderItem={({ item }) => <StudentCard student={item} />}
+          renderItem={({ item }) => (
+            <StudentCard
+              student={item}
+              onPress={() => navigation.navigate("StudentDetail", { student: item })}
+            />
+          )}
           refreshControl={<RefreshControl refreshing={false} onRefresh={reload} />}
         />
       )}
@@ -92,10 +101,9 @@ export function StudentListScreen() {
   );
 }
 
-function StudentCard({ student }: { student: Student }) {
+function StudentCard({ student, onPress }: { student: Student; onPress: () => void }) {
   return (
-    // See SCOPE NOTE above — no-op until StudentDetail exists.
-    <Pressable accessible accessibilityRole="button" accessibilityLabel={student.name} style={styles.card}>
+    <Pressable accessible accessibilityRole="button" accessibilityLabel={student.name} onPress={onPress} style={styles.card}>
       <Text style={styles.cardText}>{student.name}</Text>
     </Pressable>
   );
