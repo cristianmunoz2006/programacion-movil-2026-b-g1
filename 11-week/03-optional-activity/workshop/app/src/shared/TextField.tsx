@@ -3,24 +3,32 @@ import { theme } from "../core/theme/theme";
 
 type Props = TextInputProps & {
   label: string;
+  error?: string;
 };
 
-export function TextField({ label, style, ...inputProps }: Props) {
+export function TextField({ label, error, style, ...inputProps }: Props) {
   return (
     <View style={styles.wrapper}>
       <Text style={styles.label}>{label}</Text>
       <TextInput
         accessibilityLabel={label}
         placeholderTextColor={theme.color.textMuted}
-        style={[styles.input, style]}
+        style={[styles.input, error ? styles.inputError : null, style]}
         {...inputProps}
       />
+    {error ? (
+        <Text accessibilityRole="alert" accessibilityLiveRegion="polite" style={styles.error}>
+          {error}
+        </Text>
+      ) : null}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   wrapper: { marginBottom: theme.space.md },
+  inputError: { borderColor: theme.color.error },
+  error: { ...theme.text.caption, color: theme.color.error, marginTop: theme.space.xs },
   label: { ...theme.text.caption, color: theme.color.textMuted, marginBottom: theme.space.xs },
   input: {
     minHeight: 48, // touch target

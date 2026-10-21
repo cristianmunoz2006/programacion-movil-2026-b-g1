@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { Modal, StyleSheet, Text, View } from "react-native";
+import { Alert, Modal, StyleSheet, Text, View } from "react-native";
 import { Button } from "../../../shared/Button";
 import { TextField } from "../../../shared/TextField";
 import { theme } from "../../../core/theme/theme";
 import { useStudentForm } from "./useStudentForm";
+import { validateDocumentNumber, validateName } from "./validateStudent";
 import { strings } from "./strings";
 
 type Props = {
@@ -16,6 +17,8 @@ type Props = {
 export function AddStudentModal({ visible, onClose, onCreated }: Props) {
   const [name, setName] = useState("");
   const [documentNumber, setDocumentNumber] = useState("");
+  const [nameTouched, setNameTouched] = useState(false);
+  const [documentTouched, setDocumentTouched] = useState(false);
 
   const { state, submit, reset } = useStudentForm(() => {
     onCreated();
@@ -25,32 +28,71 @@ export function AddStudentModal({ visible, onClose, onCreated }: Props) {
   function handleClose() {
     setName("");
     setDocumentNumber("");
+    setNameTouched(false);
+    setDocumentTouched(false);
     reset();
     onClose();
   }
 
+  // Si ya hay algo escrito, cancelar pide confirmación porque se pierde lo digitado.
+  function handleCancel() {
+    if (name.trim() === "" && documentNumber.trim() === "") {
+      handleClose();
+      return;
+    }
+    Alert.alert(strings.modal.discardTitle, strings.modal.discardMessage, [
+      { text: strings.modal.keepEditing, style: "cancel" },
+      { text: strings.modal.discard, style: "destructive", onPress: handleClose },
+    ]);
+  }
+
+  // Al volver a escribir se quita el error que dejó el servidor.
+  function clearServerError() {
+    if (state.status === "error") reset();
+  }
+
+  const nameError = validateName(name);
+  const documentError = validateDocumentNumber(documentNumber);
   const isSubmitting = state.status === "submitting";
-  const canSave = name.trim().length > 0 && documentNumber.trim().length > 0 && !isSubmitting;
+  const canSave = !nameError && !documentError && !isSubmitting;
+  const duplicateError =
+    state.status === "error" && state.errorField === "documentNumber" ? state.errorMessage : undefined;
+  const showGenericError = state.status === "error" && !state.errorField;
 
   return (
-    <Modal visible={visible} animationType="slide" transparent onRequestClose={handleClose}>
+    <Modal visible={visible} animationType="slide" transparent onRequestClose={handleCancel}>
       <View style={styles.overlay}>
         <View style={styles.sheet}>
           <TextField
             label={strings.modal.nameLabel}
             value={name}
-            onChangeText={setName}
+            onChangeText={(value) => {
+              setName(value);
+              clearServerError();
+            }}
+            onBlur={() => setNameTouched(true)}
+            error={nameTouched ? nameError : undefined}
+            autoCapitalize="words"
             editable={!isSubmitting}
           />
           <TextField
             label={strings.modal.documentLabel}
             value={documentNumber}
-            onChangeText={setDocumentNumber}
+            onChangeText={(value) => {
+              setDocumentNumber(value);
+              clearServerError();
+            }}
+            onBlur={() => setDocumentTouched(true)}
+            error={(documentTouched ? documentError : undefined) ?? duplicateError}
             keyboardType="numeric"
             editable={!isSubmitting}
           />
 
-          {state.status === "error" && <Text style={styles.error}>{state.errorMessage}</Text>}
+          {showGenericError && (
+            <Text style={styles.error} accessibilityRole="alert" accessibilityLiveRegion="polite">
+              {state.errorMessage}
+            </Text>
+          )}
 
           <Button
             label={strings.modal.saveButton}
@@ -58,7 +100,12 @@ export function AddStudentModal({ visible, onClose, onCreated }: Props) {
             disabled={!canSave}
             loading={isSubmitting}
           />
-          <Button label="Cancelar" onPress={handleClose} variant="text" disabled={isSubmitting} />
+          <Button
+            label={strings.modal.cancelButton}
+            onPress={handleCancel}
+            variant="text"
+            disabled={isSubmitting}
+          />
         </View>
       </View>
     </Modal>

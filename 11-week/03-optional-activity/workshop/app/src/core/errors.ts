@@ -17,6 +17,9 @@ export class NetworkError extends AppError {}
 /** Backend rejected the input (e.g. duplicate document number, empty field). */
 export class ValidationError extends AppError {}
 
+/** The resource already exists (HTTP 409), e.g. a duplicate document number. */
+export class ConflictError extends AppError {}
+
 /** No connectivity — detected client-side before attempting the request. */
 export class OfflineError extends AppError {
   constructor() {

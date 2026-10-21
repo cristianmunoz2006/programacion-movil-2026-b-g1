@@ -1,5 +1,6 @@
 import { useCallback, useState } from "react";
 import { container } from "../../../core/di/container";
+import { ConflictError } from "../../../core/errors";
 import { strings } from "./strings";
 
 // Exact shape from docs/01-architecture/features/students.md:
@@ -7,6 +8,7 @@ import { strings } from "./strings";
 type StudentFormState = {
   status: "idle" | "submitting" | "success" | "error";
   errorMessage?: string;
+  errorField?: "documentNumber";
 };
 
 export function useStudentForm(onSuccess: () => void) {
@@ -19,10 +21,15 @@ export function useStudentForm(onSuccess: () => void) {
         await container.students.createStudent.execute(name, documentNumber);
         setState({ status: "success" });
         onSuccess();
-      } catch {
-        // We genuinely can't tell "duplicate document" apart from any other backend
-        // validation error without parsing its message text — and parsing error strings is
-        // fragile. Being honestly generic beats being specific but sometimes wrong.
+      } catch (err) {
+        if (err instanceof ConflictError) {
+          setState({
+            status: "error",
+            errorMessage: strings.modal.duplicateDocumentError,
+            errorField: "documentNumber",
+          });
+          return;
+        }
         setState({ status: "error", errorMessage: strings.modal.genericError });
       }
     },
