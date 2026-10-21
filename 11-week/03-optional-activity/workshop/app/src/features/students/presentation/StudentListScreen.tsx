@@ -1,6 +1,7 @@
-import { FlatList, Pressable, RefreshControl, StyleSheet, Text, View } from "react-native";
+import { Alert, FlatList, Pressable, RefreshControl, StyleSheet, Text, View } from "react-native";
 import { useState } from "react";
 import { Button } from "../../../shared/Button";
+import { Toast } from "../../../shared/Toast";
 import { theme } from "../../../core/theme/theme";
 import { useAuth } from "../../auth/presentation/AuthContext";
 import { useConnectivity } from "../../../core/network/useConnectivity";
@@ -23,7 +24,16 @@ export function StudentListScreen() {
   const { state, reload, refresh, refreshing } = useStudentList();
   const isConnected = useConnectivity();
   const [modalVisible, setModalVisible] = useState(false);
+  const [toast, setToast] = useState<string | null>(null);
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+
+  // Cerrar sesión borra la sesión y los datos guardados, por eso se pide confirmación.
+  function confirmLogout() {
+    Alert.alert(strings.logoutConfirmTitle, strings.logoutConfirmMessage, [
+      { text: strings.cancelButton, style: "cancel" },
+      { text: strings.logoutConfirmButton, style: "destructive", onPress: logout },
+    ]);
+  }
 
   const showOfflineBanner = state.isOffline || !isConnected;
 
@@ -47,7 +57,7 @@ export function StudentListScreen() {
             accessible
             accessibilityRole="button"
             accessibilityLabel={strings.logoutButtonA11y}
-            onPress={logout}
+            onPress={confirmLogout}
             hitSlop={8}
             style={styles.iconButton}
           >
@@ -92,10 +102,15 @@ export function StudentListScreen() {
         />
       )}
 
+      <Toast message={toast} onHide={() => setToast(null)} />
+
       <AddStudentModal
         visible={modalVisible}
         onClose={() => setModalVisible(false)}
-        onCreated={reload}
+        onCreated={() => {
+          refresh();
+          setToast(strings.modal.savedToast);
+        }}
       />
     </View>
   );

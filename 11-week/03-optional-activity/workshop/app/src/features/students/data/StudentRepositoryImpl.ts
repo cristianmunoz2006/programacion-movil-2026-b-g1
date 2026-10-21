@@ -30,6 +30,8 @@ export class StudentRepositoryImpl implements StudentRepository {
   }
 
   async createStudent(name: string, documentNumber: string): Promise<Student> {
+    // Solo para probar el indicador de carga del formulario: ver .env.example.
+    await new Promise((resolve) => setTimeout(resolve, Number(process.env.EXPO_PUBLIC_SIM_DELAY_MS ?? 0)));
     // No offline queue — see docs/03-api-and-data/offline-sync.md. If this fails, it fails;
     // the screen shows the error, it is never queued to retry automatically.
     return apiFetch<Student>("/students", {
