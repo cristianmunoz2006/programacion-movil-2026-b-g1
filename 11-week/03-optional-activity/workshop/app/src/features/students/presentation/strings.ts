@@ -2,6 +2,10 @@
 export const strings = {
   screenTitle: "Estudiantes",
   detailTitle: "Detalle del estudiante",
+  detailLoading: "Cargando estudiante",
+  detailNotFound: "No encontramos a este estudiante",
+  detailError: "No pudimos cargar al estudiante",
+  backToList: "Volver a la lista",
   loadingMessage: "Cargando estudiantes",
   cardHint: "Abre el detalle del estudiante",
   cancelButton: "Cancelar",

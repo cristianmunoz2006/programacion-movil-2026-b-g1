@@ -95,7 +95,7 @@ export function StudentListScreen() {
           renderItem={({ item }) => (
             <StudentCard
               student={item}
-              onPress={() => navigation.navigate("StudentDetail", { student: item })}
+              onPress={() => navigation.navigate("StudentDetail", { studentId: item.id })}
             />
           )}
           refreshControl={<RefreshControl refreshing={refreshing} onRefresh={refresh} />}
