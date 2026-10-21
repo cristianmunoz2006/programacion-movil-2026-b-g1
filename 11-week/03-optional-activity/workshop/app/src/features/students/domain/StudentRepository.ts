@@ -7,6 +7,11 @@ export interface StudentRepository {
    * fetch fails AND there's no cache.
    */
   getStudents(): Promise<{ students: Student[]; fromCache: boolean }>;
+  /**
+   * Looks the student up in the same data as getStudents (cache fallback included).
+   * Returns null when no student has that id.
+   */
+  getStudentById(id: string): Promise<{ student: Student | null; fromCache: boolean }>;
   /** Requires connectivity — never queued. Throws ValidationError on a duplicate document. */
   createStudent(name: string, documentNumber: string): Promise<Student>;
 }

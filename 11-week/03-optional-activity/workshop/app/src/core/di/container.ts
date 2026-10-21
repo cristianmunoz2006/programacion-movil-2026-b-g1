@@ -7,6 +7,7 @@ import { Login } from "../../features/auth/domain/Login";
 import { Logout } from "../../features/auth/domain/Logout";
 import { StudentRepositoryImpl } from "../../features/students/data/StudentRepositoryImpl";
 import { CreateStudent } from "../../features/students/domain/CreateStudent";
+import { GetStudentById } from "../../features/students/domain/GetStudentById";
 import { GetStudents } from "../../features/students/domain/GetStudents";
 
 const authRepository = new AuthRepositoryImpl();
@@ -21,6 +22,7 @@ export const container = {
   students: {
     repository: studentRepository,
     getStudents: new GetStudents(studentRepository),
+    getStudentById: new GetStudentById(studentRepository),
     createStudent: new CreateStudent(studentRepository),
   },
 };

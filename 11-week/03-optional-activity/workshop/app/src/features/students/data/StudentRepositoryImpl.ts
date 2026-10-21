@@ -29,6 +29,16 @@ export class StudentRepositoryImpl implements StudentRepository {
     }
   }
 
+  async getStudentById(id: string): Promise<{ student: Student | null; fromCache: boolean }> {
+    // Solo para probar los estados del detalle: EXPO_PUBLIC_SIM_DETAIL = "error" o "notfound".
+    if (process.env.EXPO_PUBLIC_SIM_DETAIL === "error") throw new NetworkError("Falla simulada");
+
+    // El backend aún no tiene GET /students/:id (E-04), así que se busca en la lista.
+    const { students, fromCache } = await this.getStudents();
+    if (process.env.EXPO_PUBLIC_SIM_DETAIL === "notfound") return { student: null, fromCache };
+    return { student: students.find((student) => student.id === id) ?? null, fromCache };
+  }
+
   async createStudent(name: string, documentNumber: string): Promise<Student> {
     // Solo para probar el indicador de carga del formulario: ver .env.example.
     await new Promise((resolve) => setTimeout(resolve, Number(process.env.EXPO_PUBLIC_SIM_DELAY_MS ?? 0)));
