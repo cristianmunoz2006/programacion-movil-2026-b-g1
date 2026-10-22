@@ -32,3 +32,12 @@ Los tiempos son estimaciones por observación, sin cronómetro, y valen para las
 ## Limitaciones
 
 Solo participaron dos personas y los tiempos son aproximados. Los problemas 1 y 2 salen de lo que se vio y se dijo en la prueba; la causa del problema 3 es una hipótesis.
+## Corrección aplicada
+
+Se corrigieron los problemas 1 y 2: los dos botones del encabezado de la Lista de estudiantes ahora tienen texto visible, "+ Agregar" y "Salir", además de su ícono. El nombre accesible del botón de salir pasó a ser "Salir", para que coincida con el texto visible.
+
+| Antes | Después |
+| :--- | :--- |
+| ![Encabezado solo con íconos](img/before-student-list.png) | ![Encabezado con texto](img/after-list-labels.png) |
+
+Pendiente: no se repitió la prueba con personas. Al repetirla, hay que comprobar que la tarea 1 ya no obligue a adivinar y que no se vuelvan a confundir los dos botones.

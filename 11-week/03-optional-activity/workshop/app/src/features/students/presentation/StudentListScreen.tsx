@@ -51,7 +51,7 @@ export function StudentListScreen() {
             hitSlop={8}
             style={[styles.iconButton, showOfflineBanner && styles.iconButtonDisabled]}
           >
-            <Text style={styles.iconButtonLabel}>+</Text>
+            <Text style={styles.iconButtonLabel}>+ Agregar</Text>
           </Pressable>
           <Pressable
             accessible
@@ -61,7 +61,7 @@ export function StudentListScreen() {
             hitSlop={8}
             style={styles.iconButton}
           >
-            <Text style={styles.iconButtonLabel}>⎋</Text>
+            <Text style={styles.iconButtonLabel}>Salir</Text>
           </Pressable>
         </View>
       </View>
@@ -146,13 +146,14 @@ const styles = StyleSheet.create({
   headerActions: { flexDirection: "row", gap: theme.space.sm },
   iconButton: {
     minWidth: 44,
+    paddingHorizontal: theme.space.sm,
     minHeight: 44,
     alignItems: "center",
     justifyContent: "center",
     borderRadius: theme.radius.pill,
   },
   iconButtonDisabled: { opacity: 0.4 },
-  iconButtonLabel: { fontSize: 22, color: theme.color.primary },
+  iconButtonLabel: { ...theme.text.body, fontWeight: "600", color: theme.color.primary },
   banner: { backgroundColor: theme.color.border, padding: theme.space.sm },
   bannerText: { ...theme.text.caption, color: theme.color.text, textAlign: "center" },
   centered: { flex: 1, alignItems: "center", justifyContent: "center", gap: theme.space.md, padding: theme.space.lg },

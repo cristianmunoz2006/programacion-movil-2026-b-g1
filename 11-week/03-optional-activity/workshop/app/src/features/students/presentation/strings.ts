@@ -12,7 +12,7 @@ export const strings = {
   logoutConfirmTitle: "¿Cerrar sesión?",
   logoutConfirmMessage: "Vas a tener que iniciar sesión de nuevo.",
   logoutConfirmButton: "Cerrar sesión",
-  logoutButtonA11y: "Cerrar sesión",
+  logoutButtonA11y: "Salir",
   emptyMessage: "Todavía no hay estudiantes registrados",
   addStudentCta: "Agregar estudiante",
   offlineBanner: "Sin conexión, mostrando datos guardados",
