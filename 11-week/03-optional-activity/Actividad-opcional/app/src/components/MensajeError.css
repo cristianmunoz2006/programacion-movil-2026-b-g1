@@ -1,0 +1,11 @@
+.mensaje-error {
+  text-align: center;
+  padding: 24px 16px;
+}
+
+.mensaje-error-texto {
+  margin: 0 0 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-error-texto);
+}
