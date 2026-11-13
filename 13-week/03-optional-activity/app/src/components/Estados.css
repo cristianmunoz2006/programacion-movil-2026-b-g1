@@ -1,0 +1,17 @@
+.estado {
+  text-align: center;
+  padding: 32px 16px;
+}
+
+.estado-titulo {
+  margin: 0 0 8px;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1f1f1f;
+}
+
+.estado-texto {
+  margin: 8px 0 0;
+  font-size: 1rem;
+  color: var(--color-texto-secundario);
+}
