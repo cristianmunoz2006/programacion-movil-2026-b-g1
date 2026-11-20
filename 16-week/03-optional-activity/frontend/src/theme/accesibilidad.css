@@ -1,0 +1,36 @@
+/* Ajustes de accesibilidad de la Semana 11 */
+
+:root {
+  /* Azul principal oscurecido: blanco sobre este azul da 6.39:1 (minimo AA: 4.5:1) */
+  --ion-color-primary: #0b57d0;
+  --ion-color-primary-rgb: 11, 87, 208;
+  --ion-color-primary-contrast: #ffffff;
+  --ion-color-primary-contrast-rgb: 255, 255, 255;
+  --ion-color-primary-shade: #094ab7;
+  --ion-color-primary-tint: #2366d4;
+
+  /* Rojo de error sobre blanco: 7.33:1 (el rojo original daba 3.81:1) */
+  --color-error-texto: #b00020;
+
+  /* Gris de texto secundario sobre blanco: 8.45:1 */
+  --color-texto-secundario: #4d4d4d;
+}
+
+/* Area tactil minima de 48 px en botones y filas de lista */
+ion-button {
+  min-height: 48px;
+}
+
+/* Solo para la pantalla "antes" (/antes): conserva el tamaño original del boton */
+ion-button.boton-original {
+  min-height: 0;
+}
+
+ion-item {
+  --min-height: 56px;
+}
+
+.lugar-detalle {
+  color: var(--color-texto-secundario);
+  font-size: 0.95rem;
+}
